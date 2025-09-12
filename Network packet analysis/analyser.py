@@ -29,7 +29,7 @@ def packet_handler(packet):
         "protocol": proto,
         "size": size,
         "info": info,
-        "score": round(size % 100 / 10, 2)  # dummy anomaly score
+        "score": round(size % 100 / 10, 2)  
     }
 
     packet_queue.put(pkt)
@@ -40,3 +40,4 @@ def start_sniffer(iface=None):
 def run_sniffer_background():
     thread = threading.Thread(target=start_sniffer, daemon=True)
     thread.start()
+
