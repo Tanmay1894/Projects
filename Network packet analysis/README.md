@@ -13,12 +13,6 @@ A complete HTML/CSS/JavaScript frontend for real-time network traffic analysis w
 - **Export functionality** for captured data
 - **Responsive design** that works on desktop and mobile
 
-## Files
-
-- `index.html` - Main HTML structure
-- `style.css` - Complete CSS styling with dark theme
-- `script.js` - Full JavaScript functionality
-- `README.md` - This documentation file
 
 ## Setup
 
@@ -46,7 +40,6 @@ The frontend expects WebSocket messages in this format:
     "protocol": "TCP",
     "size": 1500,
     "info": "HTTP GET request",
-    "anomalyScore": 0.2,
     "headers": {
       "frame": 1,
       "ethernet": "192.168.1.100 -> 8.8.8.8"
@@ -102,12 +95,3 @@ The interface can be customized by modifying:
 - **Features**: Add new packet analysis features in JavaScript
 - **Styling**: Modify the dark theme or create light theme variants
 
-## API Integration
-
-To integrate with your Python scapy backend:
-
-1. Implement the required API endpoints
-2. Set up WebSocket server at `/ws`
-3. Send packet data in the expected JSON format
-4. Handle session management (create, start, stop)
-5. Provide export functionality for captured packets
