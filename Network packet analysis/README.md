@@ -1,6 +1,6 @@
-# Network Traffic Analysis Frontend
+# Network Traffic Analysis
 
-A complete HTML/CSS/JavaScript frontend for real-time network traffic analysis with anomaly detection.
+
 
 ## Features
 
