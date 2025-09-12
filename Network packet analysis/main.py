@@ -4,7 +4,7 @@ from analyzer import run_sniffer_in_background, packets_buffer
 
 app = Flask(__name__)
 
-# Start sniffer thread when app starts
+# Start sniffer
 run_sniffer_in_background()
 
 @app.route("/")
@@ -17,4 +17,5 @@ def get_packets():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
