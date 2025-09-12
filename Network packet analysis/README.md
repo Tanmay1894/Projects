@@ -8,7 +8,6 @@ A complete HTML/CSS/JavaScript frontend for real-time network traffic analysis w
 - **Interactive packet list** with filtering by protocol and IP address
 - **Detailed packet inspection** with headers and payload analysis
 - **Statistics dashboard** with traffic charts and protocol distribution
-- **Anomaly detection highlighting** for suspicious network traffic
 - **Session management** with start/stop controls and duration tracking
 - **Export functionality** for captured data
 - **Responsive design** that works on desktop and mobile
