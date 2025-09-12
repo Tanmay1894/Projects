@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentiment Analysis App</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+  <style>
+    body,
+    html {
+    
+
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url("C:/Users/patil/PycharmProjects/Sentiment Analysis/media/min.gif");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Press Start 2P', cursive;
+
+    }
+    
+    
+
+    .app-window {
+      width: 800px;
+      /* Increased width */
+      height: 600px;
+      /* Increased height */
+      border-radius: 15px;
+      box-shadow: 0px 8px 20px rgba(0, 183, 255, 0.521);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-color: #0f0f01d7;
+    }
+
+
+    .app-header {
+      background-color: #b1bde4;
+      color: rgba(8, 8, 8, 0.623);
+      text-align: center;
+      padding: 15px;
+      font-size: 1.9rem;
+      font-weight: bold;
+     
+    }
+
+
+
+    .app-body {
+      flex-grow: 1;
+      padding: 30px;
+      /* Increased padding for more space */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      color: rgba(255, 189, 6, 0.733);
+      /* Default font size for body text */
+    }
+.form-control{
+  background-color: #0407113f;
+
+}
+.form-control::placeholder{
+  color: rgba(187, 255, 0, 0.438);
+
+  
+}
+
+    .form-label {
+      font-size: 1.2rem;
+      
+      
+      /* Increased font size for label */
+    }
+
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      resize: none;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+
+}
+
+     /* Increased font size for textarea text */
+
+
+
+    .btn-animate:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+      background-color: black;
+    }
+
+
+    .btn {
+      font-size: 1.3rem;
+      color: rgba(0, 0, 0, 0.76);
+      background-color: #b1bde4;
+      /* Increased font size for buttons */
+    }
+
+
+    .result-box {
+      height: 100px;
+      background-color: rgba(0, 0, 0, 0.479);
+      /* background-image: url("min.gif"); */
+      border: 4px solid #5da4c5b6;
+      border-radius: 5px;
+      padding: 10px;
+      overflow-y: auto;
+      color: rgba(187, 255, 0, 0.438);
+    }
+
+    .result-box h5 {
+      font-size: 1.3rem;
+      /* Increased font size for result heading */
+    }
+
+    .result-box p {
+      font-size: 1.1rem;
+      /* Increased font size for result text */
+    }
+
+    .app-footer {
+    
+      padding: 10px;
+      text-align: center;
+      background-color: #b1bde4;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-window animate__animated animate__fadeIn">
+    <!-- Header -->
+    <div class="app-header">
+      SENTIMENT ANALYSIS
+    </div>
+
+    <!-- Body -->
+    <div class="app-body">
+      <div>
+        <label for="inputText" class="form-label">Enter your text for analysis:</label>
+        <textarea id="inputText" placeholder="Type something here..." class="form-control"></textarea>
+      </div>
+
+      <div class="d-grid gap-2 mt-3">
+        <button class="btn btn-primary btn-lg btn-animate" onclick="analyzeSentiment()">Analyze Sentiment</button>
+      </div>
+
+      <div id="result" class="result-box mt-3">
+        <h5>Analysis Result:</h5>
+        <p id="sentimentResult">Your result will appear here...</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="app-footer">
+      <button class="btn btn-secondary btn-animate" onclick="viewPreviousEntries()">View Previous Entries</button>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function analyzeSentiment() {
+      const text = document.getElementById("inputText").value;
+
+      if (!text) {
+        document.getElementById("sentimentResult").innerText = "Please enter some text.";
+        return;
+      }
+
+      // Send the text to the Flask API
+      fetch('http://127.0.0.1:5000/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            document.getElementById("sentimentResult").innerText = `Error: ${data.error}`;
+          } else {
+            document.getElementById("sentimentResult").innerText = `Sentiment: ${data.sentiment}`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById("sentimentResult").innerText = "Error analyzing sentiment.";
+        });
+    }
+
+    function viewPreviousEntries() {
+      // In a real app, this would redirect to a history page
+      window.location.href = "history.html";
+    }
+  </script>
+</body>
+
+</html>

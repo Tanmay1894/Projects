@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Previous Entries</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .card {
+      border-radius: 10px;
+    }
+    .list-group-item {
+      font-size: 1.1rem;
+    }
+    .empty-message {
+      text-align: center;
+      font-style: italic;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card shadow-lg">
+      <div class="card-header text-center bg-primary text-white">
+        <h1 class="display-6">Previous Sentiment Analysis Entries</h1>
+      </div>
+      <div class="card-body">
+        <ul class="list-group" id="entriesList">
+          <li class='list-group-item empty-message'>Loading previous entries...</li>
+        </ul>
+        <div class="d-grid gap-2 mt-4">
+          <a href="front3.html" class="btn btn-secondary btn-lg">Back to Analysis</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("http://127.0.0.1:5000/previous_entries")
+        .then(response => response.json())
+        .then(data => {
+          const entriesList = document.getElementById("entriesList");
+          entriesList.innerHTML = "";
+
+          if (!data || data.length === 0) {
+            entriesList.innerHTML = "<li class='list-group-item text-muted empty-message'>No previous entries found.</li>";
+            return;
+          }
+
+          data.forEach(entry => {
+            const listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+            listItem.innerHTML = `<strong>Text:</strong> ${entry.text} <br>
+                                  <strong>Sentiment:</strong> ${entry.sentiment} <br>
+                                  <strong>Analyzed on:</strong> ${new Date(entry.timestamp).toLocaleString()}`;
+            entriesList.appendChild(listItem);
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching previous entries:", error);
+          const entriesList = document.getElementById("entriesList");
+          entriesList.innerHTML = "<li class='list-group-item text-danger'>Unable to fetch previous entries.</li>";
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News Sentiment Analysis</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .app-window {
+      width: 800px;
+      padding: 20px;
+      border-radius: 15px;
+      background-color: #fff;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .app-header {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 10px 10px 0 0;
+    }
+    .news-box {
+      background-color: #e9ecef;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-top: 15px;
+      border-radius: 5px;
+      min-height: 100px;
+      font-size: 1.1rem;
+    }
+    .news-details {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #555;
+      margin-top: 5px;
+    }
+    .btn-animate:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+    .app-footer {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-window">
+    <div class="app-header">News Sentiment Analysis</div>
+
+    <!-- News Section -->
+    <div id="newsBox" class="news-box">
+      <h5 id="newsTitle">Fetching latest news...</h5>
+      <p id="newsContent"></p>
+      <p id="newsDescription"></p>
+      <p id="newsAuthor" class="news-details"></p>
+      <p id="newsDate" class="news-details"></p>
+      <p id="newsSource" class="news-details"></p>
+      <button id="readMoreBtn" class="btn btn-sm btn-link" style="display: none;" onclick="loadArticle()">Read Full Article</button>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-grid gap-2 mt-3">
+      <button class="btn btn-primary btn-lg btn-animate" onclick="fetchNews()">Fetch Random News</button>
+      <button class="btn btn-success btn-lg btn-animate" onclick="analyzeSentiment()">Analyze Sentiment</button>
+    </div>
+
+    <!-- Sentiment Analysis Result -->
+    <div id="result" class="news-box">
+      <h5>Analysis Result:</h5>
+      <p id="sentimentResult">Your result will appear here...</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="app-footer">
+      <button class="btn btn-secondary btn-animate" onclick="viewPreviousEntries()">View Previous Entries</button>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    let newsContent = "";
+    let newsUrl = "";
+
+    function fetchNews() {
+      fetch('http://127.0.0.1:5000/get_blog')
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            document.getElementById("newsTitle").innerText = "No news available.";
+            document.getElementById("newsContent").innerText = "";
+            document.getElementById("newsDescription").innerText = "";
+            document.getElementById("newsAuthor").innerText = "";
+            document.getElementById("newsDate").innerText = "";
+            document.getElementById("newsSource").innerText = "";
+            document.getElementById("readMoreBtn").style.display = "none";
+          } else {
+            document.getElementById("newsTitle").innerText = data.title;
+            document.getElementById("newsContent").innerText = data.content;
+            document.getElementById("newsDescription").innerText = `Description: ${data.description}`;
+            document.getElementById("newsAuthor").innerText = `Author: ${data.author}`;
+            document.getElementById("newsDate").innerText = `Published on: ${new Date(data.publishedAt).toLocaleString()}`;
+            document.getElementById("newsSource").innerText = `Source: ${data.source}`;
+            newsUrl = data.url;
+            newsContent = data.content;
+            document.getElementById("readMoreBtn").style.display = "inline";
+          }
+        })
+        .catch(error => console.error("Error fetching news:", error));
+    }
+
+    function analyzeSentiment() {
+      if (!newsContent) {
+        document.getElementById("sentimentResult").innerText = "No news content available.";
+        return;
+      }
+
+      fetch('http://127.0.0.1:5000/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: newsContent }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("sentimentResult").innerText = `Sentiment: ${data.sentiment}`;
+      })
+      .catch(error => console.error("Error:", error));
+    }
+    function viewPreviousEntries() {
+    fetch('http://127.0.0.1:5000/previous_entries')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert("No previous entries found.");
+            } else {
+                let entriesHtml = "<h5>Previous Entries</h5><ul>";
+                data.forEach(entry => {
+                    entriesHtml += `<li><strong>Text:</strong> ${entry.text} <br> <strong>Sentiment:</strong> ${entry.sentiment}</li>`;
+                });
+                entriesHtml += "</ul>";
+
+                document.getElementById("result").innerHTML = entriesHtml;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching previous entries:", error);
+            alert("Unable to fetch previous entries.");
+        });
+    }
+    function loadArticle() {
+      if (newsUrl) {
+        window.open(newsUrl, "_blank");
+      }
+    }
+
+    function viewPreviousEntries() {
+      window.location.href = "history.html";
+    }
+  </script>
+</body>
+</html>
