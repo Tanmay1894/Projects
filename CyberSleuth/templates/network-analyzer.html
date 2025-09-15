@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <!-- ...existing logo and nav code... -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+                <img src="https://img.icons8.com/ios-filled/50/007bff/shield.png" alt="Cyber Sleuth Logo" width="32" height="32" style="filter:drop-shadow(0 0 2px #007bff);">
+                <span class="cyber-logo-text">Cyber Sleuth</span>
+            </div>
+            <h2>Navigation</h2>
+            <ul>
+                <li><a href="/" style="color:inherit;text-decoration:none;">Dashboard</a></li>
+                <li style="color:#fff;font-weight:bold;">Network Analyzer</li>
+                <li><a href="phishing-detector" style="color:inherit;text-decoration:none;">Phishing Detector</a></li>
+                <li><a href="vulnerability-scanner" style="color:inherit;text-decoration:none;">Vulnerability Scanner</a></li>
+                <li><a href="reports" style="color:inherit;text-decoration:none;">Reports / History</a></li>
+                <li><a href="settings" style="color:inherit;text-decoration:none;">Settings</a></li>
+                <li><a href="firewall-control" style="color:inherit;text-decoration:none;">Firewall Control</a></li>
+                <li><a href="user-management" style="color:inherit;text-decoration:none;">User Management</a></li>
+            </ul>
+            <div class="threat-level">
+                <strong>Threat Level:</strong>
+                <div style="margin-top:6px;font-size:1.1em;">
+                    <span style="color:#ff9800;">🟠 Moderate</span>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="user-profile">Admin</div>
+                <div class="notifications">🔔</div>
+            </header>
+            <div class="dashboard-widgets">
+                <div class="widget">
+                    <h3>Network Analyzer</h3>
+                    <p>Analyze your network traffic, view live connections, and monitor suspicious activity here.</p>
+                    <!-- Add your analyzer UI/components here -->
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
