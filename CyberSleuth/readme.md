@@ -1,4 +1,4 @@
-**CyberSleuth: Unified Cybersecurity Detection System**
+**CyberSleuth: Unified Threat Analysis System**
 
 Network Anomaly Detection | Web Vulnerability Scanning | Phishing URL Classification
 
